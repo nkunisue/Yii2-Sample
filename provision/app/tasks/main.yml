@@ -1,0 +1,15 @@
+---
+- include_vars: common-vars.yml
+
+#- command: composer global require "psy/psysh:*"
+- command: composer global require "fxp/composer-asset-plugin:1.0.0-beta4" creates=/home/vagrant/.composer/vendor/fxp/composer-asset-plugin
+
+- composer: working_dir=/var/www/yii2-sample/src/ no_dev=no
+
+- name: migrate MySQL
+  command: ./yii migrate/up --interactive=0
+  args:
+    chdir: "/var/www/yii2-sample/src"
+#
+#- name: migrate MySQL for tests
+#  command: codeception/bin/yii migrate/up --interactive=0

@@ -1,0 +1,6 @@
+vendor/
+.idea/
+.vagrant/
+.db/
+*.iml
+/src/config/env.php

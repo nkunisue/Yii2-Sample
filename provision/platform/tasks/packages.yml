@@ -1,0 +1,48 @@
+---
+- name: Downloading and enable the EPEL repository definitions.
+  action: command rpm -Uvh --replacepkgs http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+
+- name: Downloading and enable the REMI repository definitions.
+  action: command rpm -Uvh --replacepkgs http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
+
+#- name: be sure all existing packages are updated
+#  yum: name=* state=latest
+
+- yum: name=MySQL-python state=present enablerepo=remi-php56,remi,epel
+
+- name: be sure Apache2 is installed
+  yum: name={{ item }} state=present enablerepo=remi-php56,remi,epel
+  with_items:
+    - httpd
+    - mod_ssl
+  tags: common-packages
+
+- yum: name=php state=present enablerepo=remi-php56,remi,epel
+  tags: common-packages
+
+- name: be sure PHP extensions are installed
+  yum: name={{ item }} state=present enablerepo=remi-php56,remi,epel
+  with_items:
+#    - php-fpm
+    - php-gd
+    - php-intl
+    - php-mbstring
+    - php-mcrypt
+    - php-mysqlnd
+    - php-opcache
+    - php-xml
+#    - php-pecl-memcache
+#    - php-pecl-memcached
+    - php-pecl-mongo
+    - php-pecl-xdebug
+  tags: common-packages
+
+- yum: name=mysql state=present enablerepo=remi-php56,remi,epel
+  tags: common-packages
+
+- yum: name=mysql-server state=present enablerepo=remi-php56,remi,epel
+  tags: common-packages
+
+- script: ../scripts/install-composer.sh creates=/usr/local/bin/composer
+- command: /usr/local/bin/composer self-update
+

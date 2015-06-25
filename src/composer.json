@@ -1,0 +1,56 @@
+{
+  "name": "tech-vein/yii2sample",
+  "description": "Yii2 Sample",
+  "minimum-stability": "stable",
+    "require": {
+      "php": ">=5.6.0",
+      "fxp/composer-asset-plugin": "*",
+      "ext-mbstring": "*",
+      "ext-mongo": "*",
+      "ext-mysql": "*",
+      "ext-gd": "*",
+      "ext-mcrypt": "*",
+      "yiisoft/yii2": "*",
+      "yiisoft/yii2-dev": "*",
+      "yiisoft/yii2-bootstrap": "*",
+      "yiisoft/yii2-swiftmailer": "*",
+      "yiisoft/yii2-mongodb": "~2.0.0",
+      "yiisoft/yii2-jui": "~2.0.0",
+      "guzzle/guzzle": "*",
+      "knplabs/gaufrette": "0.2.*@dev",
+      "symfony/yaml": "2.5.*",
+      "fortawesome/font-awesome": "4.1.*"
+    },
+    "require-dev": {
+      "yiisoft/yii2-codeception": "*",
+      "yiisoft/yii2-debug": "*",
+      "yiisoft/yii2-gii": "~2.0.0",
+      "yiisoft/yii2-faker": "~2.0.0",
+      "codeception/codeception": "2.0.*",
+      "codeception/specify": "*",
+      "codeception/verify": "*",
+      "heroku/heroku-buildpack-php": "*"
+    },
+    "autoload": {
+    },
+    "config": {
+    },
+    "extra": {
+      "yii\\composer\\Installer::postCreateProject": {
+        "setPermission": [
+            {
+                "runtime": "0777",
+                "web/assets": "0777",
+                "yii": "0755"
+            }
+        ],
+        "generateCookieValidationKey": [
+            "config/web.php"
+        ]
+      },
+      "asset-installer-paths": {
+        "npm-asset-library": "vendor/npm",
+        "bower-asset-library": "vendor/bower"
+      }
+    }
+}

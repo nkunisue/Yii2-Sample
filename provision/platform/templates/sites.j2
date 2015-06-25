@@ -1,0 +1,69 @@
+NameVirtualHost *:80
+NameVirtualHost *:443
+
+{% for site in sites %}
+<VirtualHost *:80>
+  ServerName {{ site.name }}
+  DocumentRoot {{ site.root }}
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
+
+  <Directory {{ site.root }}>
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  ErrorLog {{ site.log }}/error.log
+
+  # Possible values include: debug, info, notice, warn, error, crit,
+  # alert, emerg.
+
+  LogLevel warn
+
+  CustomLog {{ site.log }}/access.log combined
+</VirtualHost>
+
+
+<VirtualHost *:443>
+  ServerName {{ site.name }}
+  DocumentRoot {{ site.root }}
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
+
+  <Directory {{ site.root }}>
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  SSLEngine on
+  SSLProtocol all -SSLv2
+  SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM:+LOW
+  SSLCertificateFile "/usr/local/etc/ssl/VAGRANT.crt"
+  SSLCertificateKeyFile "/usr/local/etc/ssl/VAGRANT.key"
+  <Files ~ "\.(cgi|shtml|phtml|php)$">
+    SSLOptions +StdEnvVars
+  </Files>
+  BrowserMatch "MSIE [2-5]" \
+      nokeepalive ssl-unclean-shutdown \
+      downgrade-1.0 force-response-1.0
+
+  ErrorLog {{ site.log }}/error.log
+
+  # Possible values include: debug, info, notice, warn, error, crit,
+  # alert, emerg.
+
+  LogLevel warn
+
+  CustomLog {{ site.log }}/access.log combined
+</VirtualHost>
+
+
+{% endfor %}
